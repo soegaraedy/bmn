@@ -19,7 +19,7 @@ export default function Daftarbmn(){
 export function GetBmn(){  
     const[showModal, setShowModal] = useState({visible: false, data:[]});
 
-    const address = 'http://localhost:3000/api/auth/getBmn';
+    const address = '../api/auth/getBmn';
     //const headerValue = '';
 
     const fetcher = (...args) => fetch(...args).then(res=>res.json());
