@@ -117,13 +117,13 @@ export default function Login(){
                     <div className="input-button">
                         <button type="button" onClick={handleGoogleSignin} className={styles.button_custom}>
                             Sign In with Google
-                            <Image src={'/assets/google.svg'} width="20" height={20}/>
+                            <Image src={'/assets/google.svg'} width="20" height={20} alt=''/>
                         </button>                        
                     </div>
                     <div className="input-button">
                         <button type="button" onClick={handleGithubSignin} className={styles.button_custom}>
                             Sign In with Github
-                            <Image src={'/assets/github.svg'} width="20" height={20}/>
+                            <Image src={'/assets/github.svg'} width="20" height={20} alt=''/>
                         </button> 
                     </div>
                 </form>
