@@ -19,25 +19,30 @@ export default function Daftarbmn(){
 export function GetBmn(){  
     const[showModal, setShowModal] = useState({visible: false, data:[]});
 
-    const address = '../api/auth/getBmn';
-    //const headerValue = '';
+    const[page, setPage] = useState(1);
+    const [perpage, setPerpage] = useState(10);
 
+    /**SWR */
+    const address = `../api/auth/getBmn/?page=${page}&perpage=${perpage}`;
     const fetcher = (...args) => fetch(...args).then(res=>res.json());
-    const {data, error} = useSWR(address, fetcher);
-    
-    //const item = [];
+    const {data, error} = useSWR(address, fetcher);    
     if(error) return <div>Failed to load</div>
-    if(!data) return <div>Loading</div>       
-
+    if(!data) return <div>Loading</div>
     
-    //const keys = Object.keys(data);
-    //console.log("keys: ", keys);
-
     const vals = Object.values(data);
-    //console.log("vals: ", vals);
+    const totalData = data.total_data;
+    //console.log("totalData: ", totalData);
+    const maxPage = Math.ceil(totalData/perpage);
 
-    const result = Object.entries(data);
-    //console.log("entries", result);
+    const next = ()=>{
+        setPage( page === maxPage? page: page+1);
+        setShowModal({visible:false, data:[]});
+    }
+    const prev = ()=>{
+        setPage(page > 1 ? page-1 : 1);
+        setShowModal({visible:false, data:[]});
+    }
+
 
     /*
     const newResult = result.map((item) =>{
@@ -61,14 +66,14 @@ export function GetBmn(){
                 <table className="table-fixed text-sm bg-white shadow-md rounded mb-4" >
                     <thead >
                         <tr className="font-bold p-2 border-b text-center bg-indigo-700 text-white">                            
-                            <th className=" p-3 px-5" scope="col">Jenis</th>
-                            <th className=" p-3 px-5" scope="col">Nomor BMN</th>                            
-                            <th className=" p-3 px-5" scope="col">Merk</th>   
-                            <th className=" p-3 px-5" scope="col">Tipe</th>                    
-                            <th className=" p-3 px-5" scope="col">Nama Pemegang</th>                            
-                            <th className=" p-3 px-5" scope="col">Ruangan</th>  
-                            <th className=" p-3 px-5" scope="col">Kondisi</th>
-                            <th className=" p-3 px-5" scope="col">Opsi</th>
+                            <th className="w-1/12 p-3 px-5" scope="col">Jenis</th>
+                            <th className="w-1/12 p-3 px-5" scope="col">Nomor BMN</th>                            
+                            <th className="w-1/12 p-3 px-5" scope="col">Merk</th>   
+                            <th className="w-1/12 p-3 px-5" scope="col">Tipe</th>                    
+                            <th className="w-1/12 p-3 px-5" scope="col">Nama Pemegang</th>                            
+                            <th className="w-1/12 p-3 px-5" scope="col">Ruangan</th>  
+                            <th className="w-1/12 p-3 px-5" scope="col">Kondisi</th>
+                            <th className="w-1/12 p-3 px-5" scope="col">Opsi</th>
                         </tr>                            
                     </thead>
                     <tbody >
@@ -99,11 +104,15 @@ export function GetBmn(){
                                     {item.kondisi}
                                 </td>   
                                 <td className="p-3 px-5 flex justify-end">                                    
-                                    <button onClick={()=>{
-                                        setShowModal({visible:true, data:item}) 
-                                    }} type="button" className="mr-3 text-sm bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">Edit</button>
+                                    <button onClick={()=>{setShowModal({visible:true, data:item})}} 
+                                        type="button" className="mr-3 text-sm bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">
+                                        Edit
+                                    </button>                                    
+                                    <button onClick={()=> deleteBmnById(item.nomor_bmn).then(mutate(address))} 
+                                        type="button" className="text-sm bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">
+                                        Delete
+                                    </button>
                                     
-                                    <button onClick={()=> deleteBmnById(item.nomor_bmn).then(mutate(address))} type="button" className="text-sm bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">Delete</button>
                                     {/*<button onClick={()=> editBmnById(item.nomor_bmn).then(mutate(address))} type="button" className="text-sm bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">Test Update</button> */}
                                 
                                 </td>                                 
@@ -112,6 +121,15 @@ export function GetBmn(){
                     }
                     </tbody>            
                 </table>
+            </div>
+            <div className="pagination w-6/12 flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
+                <button onClick={prev} className="mr-3 text-sm bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">
+                    Prev
+                </button>
+                <p className="mr-3">{page}/{maxPage}</p>
+                <button onClick={next} className="mr-3 text-sm bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">
+                    Next
+                </button>
             </div>                                                   
         </div>  
       

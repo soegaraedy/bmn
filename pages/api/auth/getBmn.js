@@ -2,7 +2,7 @@ import connectMongo from "@/database/conn";
 import Bmn from "@/model/BmnSchema";
 
 export default async function getBmn(req, res){
-    const currentPage = req.query.page || 1; //jika query page tidak diberikan, ambil 1 sebagai default value
+    const currentPage = req.query.page || 1; //jika parameter page tidak diberikan, ambil 1 sebagai default value
     const perPage = req.query.perpage || 10;
     let totalItems;
 
@@ -24,7 +24,8 @@ export default async function getBmn(req, res){
                 return Bmn.find()
                 //.skip((parseInt(currentPage)-1)*parseInt(perPage))
                 .skip((currentPage-1)*perPage)
-                .limit(parseInt(perPage))
+                //.limit(parseInt(perPage))
+                .limit(perPage)
             })
             .then(docs => {
                 const response = {                      
