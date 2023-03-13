@@ -2,14 +2,17 @@ export const getStaticProps = async () => {
   try{
     const apiUrl1 = 'https://webapi.bps.go.id/v1/api/domain/type/all/key/a30700d3a099c029b6921503e51a2e2b/';
     const apiUrl2 = 'https://webapi.bps.go.id/v1/api/domain/type/kabbyprov/prov/3600/key/a30700d3a099c029b6921503e51a2e2b/';
+    
     const res = await fetch(apiUrl2);
+
+    const data = await res.json();
+    
     //console.log("Res Status: ", res.status);
     //console.log("res: ", res) <= ga ada artinya kecuali status bisa dimengerti
     
-    //const data = res.status === 200 ? await res.json() : null;
+    //const data = res.status === 200 ? await res.data.json() : null;
     //console.log("data: ", data) //setelah await res.json() baru bisa diconsole log objectnya
-    
-    const data = await res.json();
+  
     return {
       props: {ninjas: data}
     }
