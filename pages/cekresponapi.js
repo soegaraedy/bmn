@@ -44,7 +44,7 @@ const Ninjas = ({ninjas}) => {
               <tr key={ninja.domain_id}>
                 <td>{ninja.domain_id}</td>
                 <td>{ninja.domain_name}</td>
-                <td><a href={ninja.domain_url} target="_blank" rel={"noopener no_referrer"}>{ninja.domain_url}</a></td>
+                <td><a href={ninja.domain_url} target="_blank" rel="noopener no_referrer">{ninja.domain_url}</a></td>
               </tr>
             ))}
           </tbody>
