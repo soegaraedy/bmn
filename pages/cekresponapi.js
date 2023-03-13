@@ -1,4 +1,11 @@
 
+export default function mainan (){
+  return (
+    <div>
+      Mainan Aja
+    </div>
+  )
+}
 /*
 export const getStaticProps = async () => {
   try{
