@@ -4,11 +4,17 @@ import Bmn from "@/model/BmnSchema";
 export default async function getBmn(req, res){
     const currentPage = req.query.page || 1; //jika parameter page tidak diberikan, ambil 1 sebagai default value
     const perPage = req.query.perpage || 10;
+    const filterJenisBmn = req.query.filterJenisBmn || 'Semua';
+
+    let filter = {};
+    if(filterJenisBmn === 'Semua'){
+        filter = {}
+    }else{filter.jenis_bmn = filterJenisBmn}
+    //console.log("selectedFilter", filterJenisBmn);
+    
     let totalItems;
 
-  
-
-    //lagi ditambahin role??
+    //Nanti ditambahin role??
     console.log("Role awal req: ", req.role);    
     req.role="admin";
     console.log("Assigned Role: ", req.role);
@@ -17,11 +23,12 @@ export default async function getBmn(req, res){
         //console.log(req.role);
         connectMongo().catch(error => res.json({error:"Connection Failed"}));
         try{
-            await Bmn.find({})
+            await Bmn.find(filter)
             .countDocuments()
             .then(count =>{
                 totalItems = count;
-                return Bmn.find()
+                return Bmn.find(filter)
+                //return Bmn.aggregate([{$match: {jenis_bmn:'PC'}}])
                 //.skip((parseInt(currentPage)-1)*parseInt(perPage))
                 .skip((currentPage-1)*perPage)
                 //.limit(parseInt(perPage))

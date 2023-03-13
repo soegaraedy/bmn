@@ -1,103 +1,68 @@
-//https://www.youtube.com/watch?v=_LL5IAC8w-k
-
-import { useState } from "react";
-import useSWR from "swr";
-
-const Products = () => {
-    const [page, setPage] = useState(1);
-    const [limit, setLimit] = useState(10);
-    const { data } = useSWR(
-      `/api/products?page=${page}&limit=${limit}`
-    );
-    const onPrevBtn = () => {
-      setPage((prev) => prev - 1);
-    };
-    const onNextBtn = () => {
-      setPage((prev) => prev + 1);
-    };
-    return (
-        <div>
-        <div>
-          {data?.products?.map((product) => (
-            <div key={product.id}>
-              <span>{product.name}</span>
-              <span>{product.price}</span>
-            </div>
-          ))}
-        </div>
-        <div>
-      <button onClick={onPrevBtn}>이전</button>
-      <button onClick={onNextBtn}>다음</button>
-      </div>
-      </div>
-    );
-  };
-  
-  export default Products;
-
-
-
-
-
-
-
-
-
-/*
-import React, {useState, useEffect} from "react"
-
-export default function FunctionOne(){
-    const myId = "3100102001-260"
-    //belum bisa myId aduh 
-    return(
-        <MyGetBmnById />
-    )
+export const getStaticProps = async () => {
+  try{
+    const apiUrl1 = 'https://webapi.bps.go.id/v1/api/domain/type/all/key/a30700d3a099c029b6921503e51a2e2b/';
+    const apiUrl2 = 'https://webapi.bps.go.id/v1/api/domain/type/kabbyprov/prov/3600/key/a30700d3a099c029b6921503e51a2e2b/';
+    const res = await fetch(apiUrl2);
+    //console.log("Res Status: ", res.status);
+    //console.log("res: ", res) <= ga ada artinya kecuali status bisa dimengerti
+    const data = res.status===200? await res.json() : null;
+    //console.log("data: ", data) //setelah await res.json() baru bisa diconsole log objectnya
+    return {
+      props: {ninjas: data}
+    }
+    
+  }catch(err){
+    //console.log("Error: ", err.message.split(',')[1].trim())
+    //const errorData = err.message.split(',')[1].trim()
+    //console.log("Error Code: ", err.code)
+    const errorCode = err.code
+    return {
+      //props: {ninjas: errorData}
+      props: {ninjas: errorCode}
+    }
+  }  
 }
 
-//https://www.youtube.com/watch?v=JG1Bc-uj5jI
-
-//belum bisa myId ???
-
-const MyGetBmnById = () => {
-    const idBmn = "3100102001-60";
-    //const idBmn = myId;
-    const [editBmn, setEditBmn] = useState([]);
-
-    useEffect( () => {
-        async function getBmnById(){
-            try{                
-                const res = await fetch(`../api/products/${idBmn}`,{method:'GET'})
-                
-                const response = await res.json();
-                console.log(response.jenis_bmn);
-
-                const vals = Object.values(response);
-                console.log(vals);
-                  
-
-            }catch(err){
-                console.log(err);
-            }
-        }
-
-        getBmnById();
-
-    },[]);
-
-    return (
-        <div>
-            <h1>Get BMN By Id</h1>
-            {
-                editBmn.nomor_bmn === "" ? "tidak ada nomor bmn":"ada nomor bmn"
-                
-            }
-
-            {
-                editBmn.nomor_bmn
-            }
-       
-        </div>
+const Ninjas = ({ninjas}) => {
+  //console.log("keys: ", Object.keys(ninjas))
+  //console.log("values: ", Object.values(ninjas))
+  //console.log("data: ", ninjas.data[1])
+  if(ninjas.data != null){
+    return(
+      <div>
+        <h1>Daftar Alamat Website BPS Kabupaten/Kota</h1>
+        <table>
+          <thead>
+            <tr>
+              <th>Kode Kab/Kota</th>
+              <th>Domain Name</th>
+              <th>Domain Url</th>
+            </tr>
+          </thead>
+          <tbody>
+            {ninjas.data[1].map(ninja => (
+              <tr key={ninja.domain_id}>
+                <td>{ninja.domain_id}</td>
+                <td>{ninja.domain_name}</td>
+                <td><a href={ninja.domain_url} target="_blank" rel={"no_referrer"}>{ninja.domain_url}</a></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     )
-    //return <div>{editBmn}</div>
-}   
-*/
+  }else{
+    return(
+      <div>
+        <a>ERROR</a>
+          <p>            
+            {ninjas==='ENOTFOUND'? 'webapi.bps.go.id is not reachable':'Internal Server Error'}
+          </p> 
+      </div>
+    )
+  }
+  
+
+}
+
+export default Ninjas;

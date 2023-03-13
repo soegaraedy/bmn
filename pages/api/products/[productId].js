@@ -3,7 +3,6 @@
 import connectMongo from "@/database/conn";
 import Bmn from "@/model/BmnSchema";
 
-
 export default async function handler(req, resp){
 
     //const {productId} = req.query
@@ -47,7 +46,6 @@ export default async function handler(req, resp){
                 return resp.status(200).json(data);             
 
             })
-            
 
         }catch(error){
             console.log("No Data Matched Your Query");
