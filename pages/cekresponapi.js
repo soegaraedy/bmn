@@ -21,7 +21,7 @@ export const getStaticProps = async () => {
     const res = await fetch(apiUrl2);
 
     const resp = await res.json();
-    const response = JSON.parse(JSON.stringify(resp));
+    
     
     //console.log("Res Status: ", res.status);
     //console.log("res: ", res) <= ga ada artinya kecuali status bisa dimengerti
@@ -34,7 +34,7 @@ export const getStaticProps = async () => {
 
     return {
       //props: {ninjas: data}
-      props: {ninjas: response}
+      props: {ninjas: resp || null}
     }
     
   }catch(err){
