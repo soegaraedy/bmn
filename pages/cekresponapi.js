@@ -33,7 +33,7 @@ export const getStaticProps = async () => {
 
     return {
       //props: {ninjas: data}
-      props: {ninjas: resp}
+      props: {ninjas: resp??null}
     }
     
   }catch(err){
