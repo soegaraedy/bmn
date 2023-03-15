@@ -66,11 +66,9 @@ export const getStaticProps = async () => {
     console.log("respon stringified: ", JSON.stringify(respon))
     console.log("respon bolak-balik: ", JSON.parse(JSON.stringify(respon)))
 
-    
-
     return {
       //props: {ninjas: data}
-      props: {ninjas: removeUndefinedsToPleaseNext(respon)}
+      props: {ninjas: removeUndefinedsToPleaseNext({respon})}
     }
     
   }catch(err){
