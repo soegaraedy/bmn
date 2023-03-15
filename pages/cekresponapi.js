@@ -89,6 +89,7 @@ const Ninjas = ({ninjas}) => {
   
 
 }
+Ninjas.defaultProps = null;
 
 export default Ninjas;
 
