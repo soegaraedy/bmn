@@ -20,7 +20,7 @@ export const getStaticProps = async () => {
     
     const res = await fetch(apiUrl2);
 
-    const data = await res.json();
+    const resp = await res.json();
     
     //console.log("Res Status: ", res.status);
     //console.log("res: ", res) <= ga ada artinya kecuali status bisa dimengerti
@@ -29,7 +29,8 @@ export const getStaticProps = async () => {
     //console.log("data: ", data) //setelah await res.json() baru bisa diconsole log objectnya
   
     return {
-      props: {ninjas: JSON.parse(JSON.stringify(data))}
+      //props: {ninjas: data}
+      props: {ninjas: JSON.parse(JSON.stringify(resp))}
     }
     
   }catch(err){
