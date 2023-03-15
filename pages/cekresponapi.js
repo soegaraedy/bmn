@@ -28,8 +28,8 @@ export const getStaticProps = async () => {
     
     //const data = res.status === 200 ? await res.data.json() : null;
     //console.log("data: ", data) //setelah await res.json() baru bisa diconsole log objectnya
-    console.log("type: ", typeof respon)
-    console.log("resp: ", respon.data)
+    console.log("type: ", typeof respon);
+    console.log("resp: ", respon.data);
     console.log("resp stringified: ", JSON.stringify(respon))
     console.log("resp bolak-balik: ", JSON.parse(JSON.stringify(respon)))
 
