@@ -11,7 +11,41 @@ export default function mainan (){
 
 */
 
+function removeUndefinedsToPleaseNext (obj) {
+  // cleaning an array
+  if (Array.isArray(obj)) {
+    const arr = obj;
+    const newArr = [];
+    arr.forEach((val, key) => {
+      if (typeof val === 'undefined') {
+        return;
+      }
+      if (val === Object(val)) {
+        // this is an object, not a regula value
+        newArr[key] = removeUndefinedsToPleaseNext(val);
+      } else {
+        newArr[key] = val;
+      }
+    });
+    return newArr;
+  }
 
+  // cleaning an object
+  const newObj = {};
+  Object.keys(obj).forEach((key) => {
+    const val = obj[key];
+    if (typeof val === 'undefined') {
+      return;
+    }
+    if (val === Object(val)) {
+      // this is an object, not a regula value
+      newObj[key] = removeUndefinedsToPleaseNext(val);
+    } else {
+      newObj[key] = val;
+    }
+  });
+  return newObj;
+}
 
 export const getStaticProps = async () => {
   try{
@@ -20,22 +54,23 @@ export const getStaticProps = async () => {
     
     const res = await fetch(apiUrl2);
 
-    const respon = await res.json();
-    
+    const respon = await res.json();    
     
     //console.log("Res Status: ", res.status);
     //console.log("res: ", res) <= ga ada artinya kecuali status bisa dimengerti
     
-    //const data = res.status === 200 ? await res.data.json() : null;
+    //const respon = res.status === 200 ? removeUndefined(res).json() : null;
     //console.log("data: ", data) //setelah await res.json() baru bisa diconsole log objectnya
     console.log("type: ", typeof respon);
-    console.log("resp: ", respon.data);
-    console.log("resp stringified: ", JSON.stringify(respon))
-    console.log("resp bolak-balik: ", JSON.parse(JSON.stringify(respon)))
+    console.log("respon: ", respon.data);
+    console.log("respon stringified: ", JSON.stringify(respon))
+    console.log("respon bolak-balik: ", JSON.parse(JSON.stringify(respon)))
+
+    
 
     return {
       //props: {ninjas: data}
-      props: {ninjas: JSON.parse(JSON.stringify(respon)) || null}
+      props: {ninjas: removeUndefinedsToPleaseNext(respon)}
     }
     
   }catch(err){
