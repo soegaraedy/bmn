@@ -11,54 +11,18 @@ export default function mainan (){
 
 */
 
-function removeUndefinedsToPleaseNext (obj) {
-  // cleaning an array
-  if (Array.isArray(obj)) {
-    const arr = obj;
-    const newArr = [];
-    arr.forEach((val, key) => {
-      if (typeof val === 'undefined') {
-        return;
-      }
-      if (val === Object(val)) {
-        // this is an object, not a regula value
-        newArr[key] = removeUndefinedsToPleaseNext(val);
-      } else {
-        newArr[key] = val;
-      }
-    });
-    return newArr;
-  }
-
-  // cleaning an object
-  const newObj = {};
-  Object.keys(obj).forEach((key) => {
-    const val = obj[key];
-    if (typeof val === 'undefined') {
-      return;
-    }
-    if (val === Object(val)) {
-      // this is an object, not a regula value
-      newObj[key] = removeUndefinedsToPleaseNext(val);
-    } else {
-      newObj[key] = val;
-    }
-  });
-  return newObj;
-}
-
 export const getStaticProps = async () => {
   try{
     const apiUrl1 = 'https://webapi.bps.go.id/v1/api/domain/type/all/key/a30700d3a099c029b6921503e51a2e2b/';
     const apiUrl2 = 'https://webapi.bps.go.id/v1/api/domain/type/kabbyprov/prov/3600/key/a30700d3a099c029b6921503e51a2e2b/';
     
     const res = await fetch(apiUrl2);
-    const respon = await res.json();    
+    //const respon = await res.json();    
     
     //console.log("Res Status: ", res.status);
     //console.log("res: ", res) <= ga ada artinya kecuali status bisa dimengerti
     
-    //const respon = res.status === 200 ? removeUndefined(res).json() : null;
+    const respon = res.status === 200 ? await res.json() : null;
     //console.log("data: ", data) //setelah await res.json() baru bisa diconsole log objectnya
 
     console.log("type: ", typeof respon);
@@ -124,7 +88,5 @@ const Ninjas = ({ninjas}) => {
   
 
 }
-Ninjas.defaultProps = null;
 
 export default Ninjas;
-
