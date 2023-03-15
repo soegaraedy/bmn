@@ -29,7 +29,7 @@ export const getStaticProps = async () => {
     //console.log("data: ", data) //setelah await res.json() baru bisa diconsole log objectnya
   
     return {
-      props: {ninjas: data}
+      props: {ninjas: JSON.parse(JSON.stringify(data))}
     }
     
   }catch(err){
