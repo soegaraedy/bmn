@@ -53,7 +53,6 @@ export const getStaticProps = async () => {
     const apiUrl2 = 'https://webapi.bps.go.id/v1/api/domain/type/kabbyprov/prov/3600/key/a30700d3a099c029b6921503e51a2e2b/';
     
     const res = await fetch(apiUrl2);
-
     const respon = await res.json();    
     
     //console.log("Res Status: ", res.status);
@@ -61,6 +60,7 @@ export const getStaticProps = async () => {
     
     //const respon = res.status === 200 ? removeUndefined(res).json() : null;
     //console.log("data: ", data) //setelah await res.json() baru bisa diconsole log objectnya
+
     console.log("type: ", typeof respon);
     console.log("respon: ", respon.data);
     console.log("respon stringified: ", JSON.stringify(respon))
@@ -68,7 +68,7 @@ export const getStaticProps = async () => {
 
     return {
       //props: {ninjas: data}
-      props: {ninjas: removeUndefinedsToPleaseNext({respon})}
+      props: {ninjas: JSON.parse(JSON.stringify(respon))}
     }
     
   }catch(err){
