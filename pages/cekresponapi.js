@@ -1,4 +1,6 @@
 
+
+/*
 export default function mainan (){
   return (
     <div>
@@ -6,7 +8,11 @@ export default function mainan (){
     </div>
   )
 }
-/*
+
+*/
+
+
+
 export const getStaticProps = async () => {
   try{
     const apiUrl1 = 'https://webapi.bps.go.id/v1/api/domain/type/all/key/a30700d3a099c029b6921503e51a2e2b/';
@@ -82,4 +88,3 @@ const Ninjas = ({ninjas}) => {
 
 export default Ninjas;
 
-*/
