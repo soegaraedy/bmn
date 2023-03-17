@@ -14,7 +14,7 @@ export async function getStaticProps(){
   const res = await fetch(urlApi);
   const apiData = await res.json();
   console.log("apiRes: ", apiData);
-  const pokemons = await JSON.parse(JSON.stringify(apiData));
+  const pokemons = JSON.parse(JSON.stringify(apiData));
   
   //const apiData = apiRes.data;
   //const apiData = apiRes;
