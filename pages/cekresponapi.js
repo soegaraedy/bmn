@@ -8,11 +8,9 @@ export default function mainan (){
 }
 */
 
-import Link from "next/link";
-
 export async function getStaticProps(){
-  //const urlApi = 'https://webapi.bps.go.id/v1/api/domain/type/all/key/a30700d3a099c029b6921503e51a2e2b/'
-  const urlApi = "https://pokeapi.co/api/v2/pokemon";
+  const urlApi = 'https://webapi.bps.go.id/v1/api/domain/type/all/key/a30700d3a099c029b6921503e51a2e2b/'
+  //const urlApi = "https://pokeapi.co/api/v2/pokemon";
   const res = await fetch(urlApi);
   const pokemons = await res.json();
   console.log("apiRes: ", pokemons);
@@ -34,6 +32,7 @@ export default function CekResponApi({ pokemons }){
   console.log("results: ", results)
 
   return( 
+    /*
     <div>
       {results.map((result) => (
     <div key={result.name}>
@@ -43,7 +42,30 @@ export default function CekResponApi({ pokemons }){
     </div>
   ))}
     </div>
-  
+  */
+
+    <div>
+    <h1>Daftar Alamat Website BPS Kabupaten/Kota</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Kode Kab/Kota</th>
+          <th>Domain Name</th>
+          <th>Domain Url</th>
+        </tr>
+      </thead>
+      <tbody>
+        {pokemons.data[1].map(ninja => (
+          <tr key={ninja.domain_id}>
+            <td>{ninja.domain_id}</td>
+            <td>{ninja.domain_name}</td>
+            <td><a href={ninja.domain_url} rel="noreferrer noopener" target="_blank" >{ninja.domain_url}</a></td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+
   )
  
 
