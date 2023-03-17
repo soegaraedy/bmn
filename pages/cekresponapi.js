@@ -9,8 +9,8 @@ export default function mainan (){
 */
 
 export async function getStaticProps(){
-  const urlApi = 'https://webapi.bps.go.id/v1/api/domain/type/all/key/a30700d3a099c029b6921503e51a2e2b/'
-  //const urlApi = "https://pokeapi.co/api/v2/pokemon";
+  //const urlApi = 'https://webapi.bps.go.id/v1/api/domain/type/all/key/a30700d3a099c029b6921503e51a2e2b/'
+  const urlApi = "https://pokeapi.co/api/v2/pokemon";
   const res = await fetch(urlApi);
   const pokemons = await res.json();
   console.log("apiRes: ", pokemons);
