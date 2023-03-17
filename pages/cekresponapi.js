@@ -9,8 +9,8 @@ export default function mainan (){
 */
 
 export async function getStaticProps(){
-  const urlApi = 'https://webapi.bps.go.id/v1/api/domain/type/all/key/a30700d3a099c029b6921503e51a2e2b/'
-  //const urlApi = "https://pokeapi.co/api/v2/pokemon";
+  //const urlApi = 'https://webapi.bps.go.id/v1/api/domain/type/all/key/a30700d3a099c029b6921503e51a2e2b/'
+  const urlApi = "https://pokeapi.co/api/v2/pokemon";
   const res = await fetch(urlApi);
   const pokemons = await res.json();
   console.log("apiRes: ", pokemons);
@@ -28,6 +28,25 @@ export async function getStaticProps(){
 
 export default function CekResponApi({ pokemons }){
   
+  const { results } = pokemons;
+  console.log("results: ", results)
+
+  return( 
+    <div>
+      {results.map((result) => (
+    <div key={result.name}>
+      <a href="/" >
+        <h2>{result.name}</h2>
+      </a>
+    </div>
+  ))}
+    </div>
+  
+  )
+ 
+
+  /*
+
   console.log("type: ", typeof pokemons);
   console.log("pokemons: ", pokemons);
   console.log("data: ", pokemons.data);
@@ -67,6 +86,7 @@ export default function CekResponApi({ pokemons }){
       </div>
     )
   }
+  */
   
 }
 
