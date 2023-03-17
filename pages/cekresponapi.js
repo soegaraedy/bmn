@@ -8,6 +8,8 @@ export default function mainan (){
 }
 */
 
+import Link from "next/link";
+
 export async function getStaticProps(){
   //const urlApi = 'https://webapi.bps.go.id/v1/api/domain/type/all/key/a30700d3a099c029b6921503e51a2e2b/'
   const urlApi = "https://pokeapi.co/api/v2/pokemon";
@@ -35,9 +37,9 @@ export default function CekResponApi({ pokemons }){
     <div>
       {results.map((result) => (
     <div key={result.name}>
-      <a href="/" >
+      
         <h2>{result.name}</h2>
-      </a>
+      
     </div>
   ))}
     </div>
