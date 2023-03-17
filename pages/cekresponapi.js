@@ -32,7 +32,7 @@ export default function CekResponApi({ pokemons }){
   console.log("results: ", results)
 
   return( 
-    /*
+    
     <div>
       {results.map((result) => (
     <div key={result.name}>
@@ -42,8 +42,8 @@ export default function CekResponApi({ pokemons }){
     </div>
   ))}
     </div>
-  */
-
+  
+  /*
     <div>
     <h1>Daftar Alamat Website BPS Kabupaten/Kota</h1>
     <table>
@@ -65,7 +65,8 @@ export default function CekResponApi({ pokemons }){
       </tbody>
     </table>
   </div>
-
+        
+  */
   )
  
 
