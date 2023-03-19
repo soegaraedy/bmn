@@ -148,18 +148,7 @@ export function GetBmn(){
                     </div>
                 </Listbox>
 
-                <div>
-                    <form>
-                        
-                        
-
-                        <input className="rounded  py-1 mt-4 w-full pl-3" type="text" name="search" placeholder="Search" 
-                            onChange={(e) => setSearch(e.target.value.toLowerCase())}
-                        />
-
-                        
-                    </form> 
-                </div>   
+                
             </div>
 
             
@@ -296,3 +285,26 @@ export async function getServerSideProps({req}){
         props:{session}  
     }
 }
+
+
+/*
+
+<div>
+                    <form>
+                        
+                    <p className="rounded  py-1 mt-4 w-full">Per Page</p>
+                        <select data-te-select-init>
+                            <option >10</option>
+                            <option disabled>30</option>
+                            <option disabled>50</option>
+                            <option disabled>100</option>
+                        </select>
+
+                        <input className="rounded  py-1 mt-4 w-full pl-3" type="text" name="search" placeholder="Search" 
+                            onChange={(e) => setSearch(e.target.value.toLowerCase())}
+                        />
+
+                        
+                    </form> 
+                </div>   
+*/
