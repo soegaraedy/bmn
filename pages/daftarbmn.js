@@ -40,7 +40,7 @@ export function GetBmn(){
         filterName: 'Semua'
     });
 
-
+    const [search, setSearch] = useState('');
 
     /**SWR */
     const address = `../api/auth/getBmn/?page=${options.page}&perpage=${options.perpage}&filterJenisBmn=${options.filterName}`;
@@ -49,7 +49,12 @@ export function GetBmn(){
     if(error) return <div>Failed to load</div>
     if(!data) return <div>Loading</div>
     
+    
     const vals = Object.values(data);
+    
+    
+   
+
     const totalData = data.total_data;
     //console.log("totalData: ", totalData);
     const maxPage = Math.ceil(totalData/perpage);
@@ -65,6 +70,13 @@ export function GetBmn(){
         setShowModal({visible:false, data:[]});
     }
        
+    /*
+    const perPage = (perHalaman) =>{
+        setPerpage(perpage = perHalaman)
+        console.log("perpage changed: ", perpage)
+    }
+    */
+
     function perubahanIklim(change){
         console.log("Change: ", change.filterName);
         setOptions(options.page !== 1 ? {...options, page:1, filterName:change.filterName} : {...options, filterName:change.filterName});
@@ -82,8 +94,9 @@ export function GetBmn(){
                 <h1 className="text-3xl">Daftar Perangkat  TI</h1>
             </div>  
                        
-            
-            <div className="relative top-1 w-72 px-3">
+        {/**Select Jenis BMN */}
+            <div className="top-1 w-72 px-3">           
+
                 <Listbox value={options} onChange={perubahanIklim}>
                     <div className="relative mt-1">
                         <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
@@ -134,12 +147,34 @@ export function GetBmn(){
                         </Transition>
                     </div>
                 </Listbox>
+
+                <div>
+                    <form>
+                        <p className="rounded  py-1 mt-4 w-full">Per Page</p>
+                        <select data-te-select-init>
+                            <option>10</option>
+                            <option disabled>30</option>
+                            <option disabled>50</option>
+                            <option disabled>100</option>
+                        </select>
+
+                        <input className="rounded  py-1 mt-4 w-full pl-3" type="text" name="search" placeholder="Search" 
+                            onChange={(e) => setSearch(e.target.value.toLowerCase())}
+                        />
+
+                        
+                    </form> 
+            </div>   
             </div>
 
-                           
             
             
-            <div className="px-3 py-8 justify-center" >
+        {/**Select Perpage */}
+
+                   
+               
+            
+            <div className="px-3 py-8 justify-center top-1" >
                 <table className="table-fixed text-sm bg-white shadow-md rounded mb-4" >
                     <thead >
                         <tr className="font-bold p-2 border-b text-center bg-indigo-700 text-white">                            
@@ -154,8 +189,25 @@ export function GetBmn(){
                         </tr>                            
                     </thead>
                     <tbody >
+                        
                     {
-                        Object.values(vals[1]).map((item) =>(
+                        Object.values((vals[1])
+                        .filter((items)=>{
+                            //console.log("items: ", items.jenis_bmn)
+                            return search.toLowerCase() === '' ?
+                            //items : items.toString().jenis_bmn.toLowerCase().includes(search)
+                            items : items.jenis_bmn.toLowerCase().includes(search) || 
+                                    items.nomor_bmn.toLowerCase().includes(search) ||
+                                    items.merk.toLowerCase().includes(search) ||
+                                    //items.tipe.toLowerCase().includes(search) || //items.tipe ada null value jadi skip aja
+                                    items.nama_pemegang.toLowerCase().includes(search) ||
+                                    items.ruangan.toLowerCase().includes(search) ||
+                                    items.kondisi.toLowerCase().includes(search) 
+                                    //console.log("typeof", items.jenis_bmn.toLowerCase().includes(search));
+                            
+                        })
+                        )                    
+                        .map((item) =>(
                             
                             <tr className="even:bg-gray-300 border-b hover:bg-orange-100 bg-gray-100" key={item.nomor_bmn}>
                                 
@@ -214,56 +266,6 @@ export function GetBmn(){
     )
 }
 
-/*
-async function editBmnById(nomor_bmn){
-    const editId = nomor_bmn;
-    console.log("idBmn to edit: ", editId);    
-
-    //https://www.youtube.com/watch?v=IfJaGxIqijE
-    //https://morioh.com/p/059573f49760
-
-    try{
-        
-        const req = {
-            serial_number : 'req.body.serial_number',
-            jenis_bmn: 'UPS',
-            merk: 'req.body.merk',
-            tipe: 'req.body.tipe',
-            os: 'req.body.os',
-            office: 'req.body.office',
-            antivirus: 'req.body.antivirus',                        
-            nama_pemegang: 'req.body.nama_pemegang',
-            nip: 'req.body.nip',
-            ruangan: 'req.body.ruangan',  
-            asal_pengadaan: 'req.body.asal_pengadaan',                      
-            tahun: 'req.body.tahun',
-            kondisi: 'req.body.kondisi',
-        }       
-
-        console.log("JSON Stringify", JSON.stringify(req))
-        const options = {
-            method: 'PATCH',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(req)
-        }
-        
-        const res = await fetch(`../api/products/${editId}`, options)
-        
-        const response = await res.json();
-        //console.log(response.jenis_bmn);
-
-        //const vals = Object.values(response);
-        //console.log(vals)
-        console.log(Object.values(response));         
-        
-        //setModeldata(response);
-
-    }catch(err){
-        console.log(err);
-    }      
-}
-*/
-
 async function deleteBmnById(nomor_bmn){
     //const {mutate} = useSWRConfig;
     const deleteId = nomor_bmn;
@@ -299,50 +301,3 @@ export async function getServerSideProps({req}){
         props:{session}  
     }
 }
-
-
-//======================== UNUSED FUNCTION ========================================//
-/**
- 
-function Table({ columns, data }) {
-    // Use the state and functions returned from useTable to build your UI
-    const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-      useTable({
-        columns,
-        data,
-      });
-} 
-
-function Header(){
-    return(
-        <h1>Daftar BMN</h1>
-    )
-}
- */
-//tadinya mau pakai getData, tapi engga jadi, pakai SWR aja
-/*
-async function getData({req}){
-    const router = useRouter();
-    //console.log(req)
-    
-    const options = {
-        method: 'GET',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(req)
-    }
-
-    await fetch('http://localhost:3000/api/auth/getBmn', options)
-        .then(res => res.json())
-        
-        //.then(data => console.log(data))
-        //return res
-        .then((data) => {
-            //console.log(data);
-            return data;
-            //if(data) router.push('http://localhost:3000');
-            //return data;
-            
-        })            
-}
-
-*/
